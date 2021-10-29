@@ -1,0 +1,5 @@
+[staging]
+staging ansible_ssh_host=corporeal-staging.df.sahamassurance.ma ansible_ssh_user=ubuntu
+
+[staging:vars]
+ansible_python_interpreter=/usr/bin/python3

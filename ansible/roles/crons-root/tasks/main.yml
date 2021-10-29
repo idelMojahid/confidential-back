@@ -1,0 +1,16 @@
+
+- name  : Remove user's crontab
+  shell : crontab -u root -r
+  tags: crons
+  ignore_errors: true
+
+- name: Copy ssl from passbolt VM
+  cron:
+    name: "copy ssl from passbolt VM"
+    user: root
+    weekday: "{{ ssl_copy_day }}"
+    minute: 0
+    hour: 12
+    job: ". $HOME/.profile; /usr/bin/flock -n /tmp/ssl-copy.lockfile /bin/bash /root/ssl-copy.sh restart-nginx"
+  when: ssl_copy_day is defined
+  tags: crons

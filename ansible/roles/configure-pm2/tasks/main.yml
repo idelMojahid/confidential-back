@@ -1,0 +1,31 @@
+
+
+- name: Creates pm2 directory
+  file: path=/home/ubuntu/pm2 state=directory owner=ubuntu group=ubuntu mode=0755
+  tags: pm2
+
+- name: Copy pm2.config.js
+  copy: src=home/ubuntu/pm2/pm2.config.js dest=/home/ubuntu/pm2/pm2.config.js owner=ubuntu group=ubuntu mode=0644
+  tags: pm2
+
+- name: Creates pm2 logs directory
+  file: path=/home/ubuntu/pm2/logs state=directory owner=ubuntu group=ubuntu mode=0755
+  tags: pm2
+
+- name: Creates logs directory
+  file: path={{ logs_dir }} state=directory owner=ubuntu group=ubuntu mode=0755
+  tags: pm2
+
+- name: Activate logrotate for pm2
+  copy: src=etc/logrotate.d/pm2-ubuntu dest=/etc/logrotate.d/pm2-ubuntu group=root mode=0644
+  tags: pm2
+
+- name: Copy pm2-ubuntu.service
+  copy: src=etc/systemd/system/pm2-ubuntu.service dest=/etc/systemd/system/pm2-ubuntu.service owner=root group=root mode=0644
+  tags: pm2
+
+- name: Enable pm2-ubuntu service
+  systemd:
+    name: pm2-ubuntu
+    enabled: yes
+  tags: pm2

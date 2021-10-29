@@ -1,0 +1,16 @@
+export interface VictimType {
+    id?: Number,
+    firstName: string,
+        lastName: string,
+        cin:string,
+        telephoneNumber: string,
+        procedureId: Number,
+        damageType: string,
+        profession: string,
+        workAccidentId: Number,
+        itt: string,
+        city:string,
+        address:string,
+        isExcluded: Boolean,
+        claimId:Number,
+}

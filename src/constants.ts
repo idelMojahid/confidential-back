@@ -1,0 +1,5 @@
+export const CLAIMS_STATUS = {
+    VALIDATED : 'VALIDATED',
+    PENDING : 'PENDING',
+    REJECTED : 'REJECTED',
+}

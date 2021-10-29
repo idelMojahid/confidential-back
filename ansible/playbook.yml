@@ -1,0 +1,26 @@
+---
+
+- name: Api Corporeal Provisioning
+  hosts: all
+  become: true
+  gather_facts: true
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - role: public-keys
+      tags: pub
+    - role: ubuntu-apt
+      tags: apt
+    - role: geerlingguy.nodejs
+      tags: nodejs
+    - role: configure-pm2
+      tags: pm2
+    - role: set-environment-root
+      tags: root
+    - role: set-environment
+      tags: env
+    - role: crons-root
+      tags: root
+    - role: ubuntu-nodejs-nginx
+      tags: nginx

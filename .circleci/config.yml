@@ -1,0 +1,80 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:12.14
+  environment:
+    TZ: "/usr/share/zoneinfo/Africa/Casablanca"
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.5
+jobs:
+  corporeal-api:
+    <<: *defaults
+    docker:
+    - image: circleci/node:12.14
+    - image: circleci/postgres:11.5-alpine-postgis-ram
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_DB: circle_test
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: ''
+      DB_NAME: circle_test
+      DB_PORT: 5432
+      DB_HOST: 127.0.0.1
+      LOGS_DIR: /tmp/
+      PM2_PORT: 8181
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - cache-corporeal-api-{{ checksum "yarn.lock" }}
+        - cache-corporeal-api
+    - run: sudo npm install pm2 -g
+    - run: sudo mkdir -m 777 -p /home/ubuntu/pm2/logs
+    - run: yarn install --frozen-lockfile
+    - run: yarn build
+    - run: yarn test
+    - codecov/upload:
+        file: coverage/coverage-final.json
+    - store_artifacts:
+        path: ./coverage
+    - save_cache:
+        key: cache-corporeal-api-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+  deploy:
+    <<: *defaults
+    environment:
+      AWS_REGION: eu-central-1
+      AWS_SECURITY_GROUP: sg-083b2638ce6a3696d
+    steps:
+      - checkout
+      - run:
+          name: Install awscli & rsync
+          command: |
+            sudo apt update
+            sudo apt install python-setuptools python-dev build-essential rsync
+            sudo easy_install pip
+            sudo pip install awscli
+      - run: bash scripts/authorize_circleci_ip.sh
+      - restore_cache:
+          keys:
+          - cache-deploy-{{ checksum "yarn.lock" }}
+          - cache-deploy
+      - run: yarn install --frozen-lockfile
+      - run: make corporeal-api-staging-deploy
+      - save_cache:
+          key: cache-deploy-{{ checksum "yarn.lock" }}
+          paths:
+          - node_modules
+      - run: bash scripts/revoke_circleci_ip.sh
+workflows:
+  run:
+    jobs:
+      - corporeal-api
+      - deploy:
+          requires:
+            - corporeal-api
+          filters:
+            branches:
+              only: staging

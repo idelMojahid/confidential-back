@@ -1,0 +1,98 @@
+{
+  "name": "confidential-back",
+  "private": true,
+  "version": "1.0.0",
+  "description": "confidential-back",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "cross-env NODE_ENV=development nest start --watch --debug",
+    "start:prod": "/usr/local/lib/npm/bin/pm2 --env production startOrGracefulReload /home/ubuntu/pm2/pm2.config.js && /usr/local/lib/npm/bin/pm2 save",
+    "migrate:create": "node_modules/.bin/sequelize migration:generate --name ",
+    "migrate:up": "node_modules/.bin/sequelize db:migrate",
+    "migrate:down": "node_modules/.bin/sequelize db:migrate:undo",
+    "generate:model": "node_modules/.bin/nest generate module;node_modules/.bin/nest generate controller;node_modules/.bin/nest generate service",
+    "seed:create": "node_modules/.bin/sequelize seed:generate --name",
+    "seed:run": "node_modules/.bin/sequelize db:seed --seed",
+    "seed:run:all": "node_modules/.bin/sequelize db:seed:all",
+    "seed:undo:all": "node_modules/.bin/sequelize db:seed:undo:all",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest --coverage --maxWorkers 3",
+    "test:watch": "jest --watch",
+    "test:no-coverage": "jest",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^6.10.14",
+    "@nestjs/config": "^0.1.0",
+    "@nestjs/core": "^6.10.14",
+    "@nestjs/platform-express": "^6.11.7",
+    "@types/bluebird": "^3.5.29",
+    "@types/pg": "^7.14.1",
+    "@types/sequelize": "^4.28.8",
+    "@types/validator": "^12.0.1",
+    "c": "^7.0.0",
+    "http-status": "^1.4.2",
+    "aws-sdk": "^2.618.0",
+    "lodash": "^4.17.15",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "node-mocks-http": "^1.8.1",
+    "pg": "^7.17.1",
+    "pg-hstore": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.0",
+    "rxjs": "^6.5.4",
+    "sequelize": "^5.21.3",
+    "sequelize-cli": "^5.5.1",
+    "sequelize-typescript": "^1.1.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^6.13.2",
+    "@nestjs/schematics": "^6.8.1",
+    "@nestjs/testing": "^6.10.14",
+    "@types/express": "^4.17.2",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.5.0",
+    "@types/supertest": "^2.0.8",
+    "jest": "^24.9.0",
+    "node-mocks-http": "^1.8.1",
+    "prettier": "^1.18.2",
+    "shipit-cli": "^5.1.0",
+    "shipit-deploy": "^5.1.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.3.0",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.0",
+    "tsconfig-paths": "^3.9.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s",
+      "!**/*.entity.ts"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      ".module.ts",
+      "src/main.ts",
+      ".entity.ts"
+  ]
+  }
+}

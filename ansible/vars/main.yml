@@ -1,0 +1,14 @@
+---
+
+timezone: UTC
+apt_dependencies:
+  - python-apt
+  - aptitude
+  - jq # Handle JSON in CLI. See https://stedolan.github.io/jq/
+  - python3-psycopg2 # Required for PostgreSQL connection with Python3
+  - build-essential # Required by make
+  - make # Required by gyp building
+  - sshpass # Required by ssl-copy.sh
+nodejs_npm_global_packages:
+  - pm2
+  - yarn

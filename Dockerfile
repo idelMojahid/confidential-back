@@ -1,0 +1,6 @@
+FROM postgres:11.5
+
+ENV POSTGRES_USER=postgres
+
+ENV POSTGRES_PASSWORD=docker
+

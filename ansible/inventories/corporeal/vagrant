@@ -1,0 +1,5 @@
+[vagrant]
+vagrant ansible_ssh_host=10.0.0.11 ansible_ssh_user=vagrant
+
+[vagrant:vars]
+ansible_python_interpreter=/usr/bin/python3

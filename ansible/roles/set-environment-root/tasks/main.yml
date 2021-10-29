@@ -1,0 +1,29 @@
+- name: create .profile file with configuration env vars for root
+  template:
+    src: root/.profile
+    dest: /root/.profile
+    owner: root
+    group: root
+    mode: 0600
+  tags:
+    - env
+    - ssl
+
+- name: Copy ssl-copy.sh to /root
+  copy:
+    src: root/ssl-copy.sh
+    dest: /root/ssl-copy.sh
+    owner: root
+    group: root
+    mode: 0644
+  when: letsencrypt is defined
+  register: ssl_copy
+  tags:
+    - ssl
+
+- name: Run ssl-copy.sh
+  shell: . $HOME/.profile; /usr/bin/flock -n /tmp/ssl-copy.lockfile /bin/bash /root/ssl-copy.sh
+  become: yes
+  when: ssl_copy.changed
+  tags:
+    - ssl

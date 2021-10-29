@@ -1,0 +1,9 @@
+---
+
+- name: Set up authorized keys
+  authorized_key:
+    user: ubuntu
+    state: present
+    key: "{{ lookup('pipe','cat ./files/authorized-keys/*.pub') }}"
+    exclusive: yes
+  tags: ubuntu

@@ -1,0 +1,9 @@
+- name: create .profile file with configuration env vars for ubuntu
+  template:
+    src: home/ubuntu/.profile
+    dest: /home/ubuntu/.profile
+    owner: ubuntu
+    group: ubuntu
+    mode: 0600
+  tags:
+    - env
